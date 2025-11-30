@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template">
+
+    <t t-name="tax_calculation.TaxCalculation">
+
+        <!-- =================== MAIN HEADING =================== -->
+        <div class="container my-4">
+            <h2 class="text-center fw-bold text-primary mb-4">
+                Tax Calculation Summary
+            </h2>
+        </div>
+        <t t-if="state.view == 'all' or ''">
+
+            <!-- CALL VIEWS -->
+            <t t-call="tax_calculation.AccordionView"/>
+            <t t-call="tax_calculation.TimelineView"/>
+            <t t-call="tax_calculation.CardView"/>
+            <t t-call="tax_calculation.ListView"/>
+            <t t-call="tax_calculation.TableView"/>
+        </t>
+        <t t-if="state.view == 'TimelineView'">
+            <t t-call="tax_calculation.TimelineView"/>
+        </t>
+        <t t-if="state.view == 'CardView'">
+            <t t-call="tax_calculation.CardView"/>
+        </t>
+        <t t-if="state.view == 'ListView'">
+            <t t-call="tax_calculation.ListView"/>
+        </t>
+        <t t-if="state.view == 'TableView'">
+            <t t-call="tax_calculation.TableView"/>
+        </t>
+        <t t-if="state.view == 'AccordionView'">
+            <t t-call="tax_calculation.AccordionView"/>
+        </t>
+
+    </t>
+    <t t-name="tax_calculation.TimelineView">
+        <div class="container my-4">
+            <h4 class="fw-bold mb-3 text-secondary">View : Timeline</h4>
+            <div class="timeline">
+                <t t-foreach="state.record_values" t-as="line" t-key="line_key_1">
+                    <div class="timeline-item mb-4 d-flex">
+                        <div class="timeline-icon bg-success text-white rounded-circle me-3 d-flex align-items-center justify-content-center"
+                             style="width:40px;height:40px;">
+                            <i class="fa fa-box"/>
+                        </div>
+                        <div class="timeline-content p-3 rounded bg-light border">
+                            <h6 class="fw-bold mb-3">
+                                <t t-esc="line"/>
+                            </h6>
+                            <t t-set="total_amount" t-value="0"/>
+                            <t t-foreach="state.record_values[line]['taxes_data']" t-as="tax" t-key="tax_key_1">
+                                <t t-set="total_amount" t-value="total_amount + tax['tax_amount']"/>
+                                <div class="d-flex justify-content-between mt-2 p-2 rounded bg-white border">
+                                    <span class="fw-semibold text-primary">
+                                        <t t-esc="tax['tax_name']"/>
+                                    </span>
+                                    <span class="fw-bold">
+                                        <t t-esc="tax['currency_symbol']"/>
+                                        <t t-esc="tax['tax_amount']"/>
+                                    </span>
+                                </div>
+                            </t>
+                            <div class="d-flex justify-content-between mt-3 pt-2 border-top">
+                                <span class="fw-bold">Tax Excluded</span>
+                                <span class="fw-bold">
+                                    <t t-esc="state.currency_symbol"/>
+                                    <t t-esc="state.record_values[line]['total_excluded']"/>
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span class="fw-bold">Tax</span>
+                                <span class="fw-bold">
+                                    <t t-esc="state.currency_symbol"/>
+                                    <t t-esc="total_amount"/>
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span class="fw-bold">Total Amount</span>
+                                <span class="fw-bold">
+                                    <t t-esc="state.currency_symbol"/>
+                                    <t t-esc="state.record_values[line]['total_included']"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+    <t t-name="tax_calculation.CardView">
+        <div class="container my-4">
+            <h4 class="fw-bold mb-3 text-secondary">View : Card</h4>
+            <div class="row g-4 my-3">
+                <t t-foreach="state.record_values" t-as="line" t-key="line_key_2">
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-dark fw-bold mb-3">
+                                    <t t-esc="line"/>
+                                </h5>
+                                <t t-set="total_amount" t-value="0"/>
+                                <t t-foreach="state.record_values[line]['taxes_data']" t-as="tax" t-key="tax_key_2">
+                                    <t t-set="total_amount" t-value="total_amount + tax['tax_amount']"/>
+                                    <div class="d-flex justify-content-between mb-2 p-2 rounded bg-light border">
+                                        <span class="text-secondary">
+                                            <t t-esc="tax['tax_name']"/>
+                                        </span>
+                                        <span class="fw-bold text-success">
+                                            <t t-esc="tax['currency_symbol']"/>
+                                            <t t-esc="tax['tax_amount']"/>
+                                        </span>
+                                    </div>
+                                </t>
+                                <div class="d-flex justify-content-between mt-3 pt-2 border-top fw-bold">
+                                    <span>Tax Excluded</span>
+                                    <span>
+                                        <t t-esc="state.currency_symbol"/>
+                                        <t t-esc="state.record_values[line]['total_excluded']"/>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2 fw-bold">
+                                    <span>Tax</span>
+                                    <span>
+                                        <t t-esc="state.currency_symbol"/>
+                                        <t t-esc="total_amount"/>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2 fw-bold">
+                                    <span>Total Amount</span>
+                                    <span>
+                                        <t t-esc="state.currency_symbol"/>
+                                        <t t-esc="state.record_values[line]['total_included']"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+    <t t-name="tax_calculation.ListView">
+        <div class="container my-4">
+            <h4 class="fw-bold mb-3 text-secondary">View : List</h4>
+            <div class="list-group my-3 shadow-sm">
+                <t t-foreach="state.record_values" t-as="line" t-key="line_key_3">
+                    <div class="list-group-item">
+                        <h6 class="fw-bold mb-2 text-dark">
+                            <t t-esc="line"/>
+                        </h6>
+                        <t t-set="total_amount" t-value="0"/>
+                        <t t-foreach="state.record_values[line]['taxes_data']" t-as="tax" t-key="tax_key_3">
+                            <t t-set="total_amount" t-value="total_amount + tax['tax_amount']"/>
+                            <div class="d-flex justify-content-between p-2 rounded mb-2 bg-light border-start border-3 border-primary">
+                                <span>
+                                    <t t-esc="tax['tax_name']"/>
+                                </span>
+                                <strong>
+                                    <t t-esc="tax['currency_symbol']"/>
+                                    <t t-esc="tax['tax_amount']"/>
+                                </strong>
+                            </div>
+                        </t>
+                        <div class="d-flex justify-content-between mt-2 pt-2 border-top fw-bold">
+                            <span>Tax Excluded</span>
+                            <span>
+                                <t t-esc="state.currency_symbol"/>
+                                <t t-esc="state.record_values[line]['total_excluded']"/>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1 fw-bold">
+                            <span>Tax</span>
+                            <span>
+                                <t t-esc="state.currency_symbol"/>
+                                <t t-esc="total_amount"/>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1 fw-bold">
+                            <span>Total Amount</span>
+                            <span>
+                                <t t-esc="state.currency_symbol"/>
+                                <t t-esc="state.record_values[line]['total_included']"/>
+                            </span>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+    <t t-name="tax_calculation.TableView">
+        <div class="container my-4">
+            <h4 class="fw-bold mb-3 text-secondary">View : Table</h4>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Line</th>
+                        <th>Tax Name</th>
+                        <th>Tax Amount</th>
+                        <th>Tax Excluded</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="state.record_values" t-as="line" t-key="line_key_4">
+                        <t t-set="total_amount" t-value="0"/>
+                        <t t-foreach="state.record_values[line]['taxes_data']" t-as="tax" t-key="tax_key_4">
+                            <t t-set="total_amount" t-value="total_amount + tax['tax_amount']"/>
+                            <tr>
+                                <td>
+                                    <t t-esc="line"/>
+                                </td>
+                                <td>
+                                    <t t-esc="tax['tax_name']"/>
+                                </td>
+                                <td>
+                                    <t t-esc="tax['currency_symbol']"/>
+                                    <t t-esc="tax['tax_amount']"/>
+                                </td>
+                                <td>
+                                    <t t-esc="state.currency_symbol"/>
+                                    <t t-esc="state.record_values[line]['total_excluded']"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+    <t t-name="tax_calculation.AccordionView">
+        <div class="container my-4">
+            <h4 class="fw-bold mb-3 text-secondary">View : Accordion View</h4>
+            <div class="accordion" id="accordionTax">
+                <t t-foreach="state.record_values" t-as="line" t-key="line_key">
+                    <t t-set="total_amount" t-value="0"/>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" t-att-id="'heading_' + line_key">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    t-att-data-bs-target="'#collapse_' + line_key"
+                                    aria-expanded="false"
+                                    t-att-aria-controls="'collapse_' + line_key">
+                                <t t-esc="line"/>
+                            </button>
+                        </h2>
+                        <div class="accordion-collapse collapse"
+                             t-att-id="'collapse_' + line_key"
+                             t-att-aria-labelledby="'heading_' + line_key"
+                             t-att-data-bs-parent="'#accordionTax'">
+                            <div class="accordion-body">
+                                <t t-foreach="state.record_values[line]['taxes_data']" t-as="tax" t-key="tax_key">
+                                    <t t-set="total_amount" t-value="total_amount + tax['tax_amount']"/>
+                                    <div class="d-flex justify-content-between mb-2 p-2 bg-light border rounded">
+                                        <span>
+                                            <t t-esc="tax['tax_name']"/>
+                                        </span>
+                                        <span>
+                                            <t t-esc="tax['currency_symbol']"/>
+                                            <t t-esc="tax['tax_amount']"/>
+                                        </span>
+                                    </div>
+                                </t>
+                                <div class="d-flex justify-content-between mt-2 fw-bold border-top pt-2">
+                                    <span>Tax Excluded</span>
+                                    <span>
+                                        <t t-esc="state.currency_symbol"/>
+                                        <t t-esc="state.record_values[line]['total_excluded']"/>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1 fw-bold">
+                                    <span>Tax</span>
+                                    <span>
+                                        <t t-esc="state.currency_symbol"/>
+                                        <t t-esc="total_amount"/>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1 fw-bold">
+                                    <span>Total Amount</span>
+                                    <span>
+                                        <t t-esc="state.currency_symbol"/>
+                                        <t t-esc="state.record_values[line]['total_included']"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+
+
+</templates>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_account_move_form_inherit_yash" model="ir.ui.view">
+            <field name="name">account.move.form.inherit.yash.invoice</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="tax_calculation" string="Tax Calculation All View">
+                        <field name="invoice_line_ids" widget="TaxCalculation"
+                               options='{"tax_field": "tax_ids", "amount_field": "price_subtotal", "display_name_field": "product_id"}'/>
+                    </page>
+                    <page name="tax_calculation" string="Tax Calculation Accordion View">
+                        <field name="invoice_line_ids" widget="TaxCalculation"
+                               options='{"tax_field": "tax_ids", "amount_field": "price_subtotal", "display_name_field": "product_id", "view":"AccordionView"}'/>
+                    </page>
+                    <page name="tax_calculation" string="Tax Calculation Timeline View">
+                        <field name="invoice_line_ids" widget="TaxCalculation"
+                               options='{"tax_field": "tax_ids", "amount_field": "price_subtotal", "display_name_field": "product_id", "view":"TimelineView"}'/>
+                    </page>
+                    <page name="tax_calculation" string="Tax Calculation Card View">
+                        <field name="invoice_line_ids" widget="TaxCalculation"
+                               options='{"tax_field": "tax_ids", "amount_field": "price_subtotal", "display_name_field": "product_id", "view":"CardView"}'/>
+                    </page>
+                    <page name="tax_calculation" string="Tax Calculation List View">
+                        <field name="invoice_line_ids" widget="TaxCalculation"
+                               options='{"tax_field": "tax_ids", "amount_field": "price_subtotal", "display_name_field": "product_id", "view":"ListView"}'/>
+                    </page>
+                    <page name="tax_calculation" string="Tax Calculation Table View">
+                        <field name="invoice_line_ids" widget="TaxCalculation"
+                               options='{"tax_field": "tax_ids", "amount_field": "price_subtotal", "display_name_field": "product_id", "view":"TableView"}'/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
