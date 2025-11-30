@@ -16,7 +16,7 @@
             'tax_calculation/static/src/tax_calculation/*',
         ],
     },
-    'images': ['static/description/banner.jpg'],
+    'images': ['static/description/cover.png'],
     "installable": True,
     "application": True,
     "license": "LGPL-3",
